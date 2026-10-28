@@ -49,7 +49,7 @@ One case never reached the limit and is left out of this test.
 
 ### 4. Missing sensors
 
-Removing any single sensor changed the error very little (0.111–0.119 mm vs 0.113 mm with all sensors).
+Removing any single sensor changed the error very little (0.111–0.119 mm vs 0.113 mm with all sensors). This test uses a separately trained median model, so its all-sensor error differs slightly from the 0.115 mm in the first table. 
 Gradient boosting with **no sensors** (time and settings only) gave the lowest error, **0.092 mm**.
 
 ### What this means
