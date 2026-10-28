@@ -1,0 +1,10 @@
+features,MAE_mm,n_features
+all sensors,0.11347086091524791,70
+without spindle current AC,0.11146551490355272,59
+without spindle current DC,0.11436056564866158,59
+without table vibration,0.11188360942584533,59
+without spindle vibration,0.11855598858642064,59
+without table acoustic emission,0.11839576718283999,59
+without spindle acoustic emission,0.11872745840343174,59
+spindle current only,0.11633293950008772,26
+no sensors (time + settings),0.09212628360821151,4

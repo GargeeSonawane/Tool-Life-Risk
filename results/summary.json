@@ -1,0 +1,45 @@
+{
+  "scores": [
+    {
+      "model": "process_only",
+      "MAE_mm": 0.10973622146611277,
+      "RMSE_mm": 0.17832953283230965,
+      "n_test_points": 146
+    },
+    {
+      "model": "gbm_q",
+      "MAE_mm": 0.11462299590248828,
+      "RMSE_mm": 0.18532806101693108,
+      "n_test_points": 146
+    },
+    {
+      "model": "forest",
+      "MAE_mm": 0.13282367263943248,
+      "RMSE_mm": 0.2043050970966679,
+      "n_test_points": 146
+    },
+    {
+      "model": "ridge",
+      "MAE_mm": 0.1390190347226895,
+      "RMSE_mm": 0.20445168249621704,
+      "n_test_points": 146
+    }
+  ],
+  "coverage_80": 0.547945205479452,
+  "risk_policy": {
+    "tools": 15,
+    "failures": 2,
+    "failure_rate": 0.13333333333333333,
+    "mean_life_used": 0.6456613756613757,
+    "mean_life_used_no_failure": 0.5911477411477412
+  },
+  "fixed_policy": {
+    "tools": 15,
+    "failures": 1,
+    "failure_rate": 0.06666666666666667,
+    "mean_life_used": 0.4454497354497356,
+    "mean_life_used_no_failure": 0.4058390022675738
+  },
+  "cost_risk": 5.0,
+  "cost_fixed": 5.333333333333333
+}
