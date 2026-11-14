@@ -3,3 +3,7 @@ data/*.zip
 __pycache__/
 *.pyc
 .venv/
+data/phm2010/
+data/synthetic_phm/
+results_phm/features.csv
+results_phm/predictions.csv

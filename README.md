@@ -10,7 +10,7 @@ and turns that risk into a recommendation. It then tests, on tools the model
 has never seen, whether this uses more tool life than a fixed rule without
 more failures.
 
-Author: Gargee Sonawane · Data: NASA Ames Prognostics Data Repository, milling data set (Agogino & Goebel, 2007)
+Author: Gargee Sonawane · Data: NASA Ames milling data set (Agogino & Goebel, 2007) and PHM Society 2010 Data Challenge
 
 Code written with help from an AI assistant (Claude); experiments run, results checked and interpreted by the author.
 
@@ -49,7 +49,7 @@ One case never reached the limit and is left out of this test.
 
 ### 4. Missing sensors
 
-Removing any single sensor changed the error very little (0.111–0.119 mm vs 0.113 mm with all sensors). This test uses a separately trained median model, so its all-sensor error differs slightly from the 0.115 mm in the first table. 
+Removing any single sensor changed the error very little (0.111–0.119 mm vs 0.113 mm with all sensors). This test uses a separately trained median model, so its all-sensor error differs slightly from the 0.115 mm in the first table.
 Gradient boosting with **no sensors** (time and settings only) gave the lowest error, **0.092 mm**.
 
 ### What this means
@@ -64,7 +64,54 @@ rapid wear and calibrating uncertainty, which need richer data and better uncert
 
 ---
 
-## Data
+## Second study: PHM 2010 milling data (force, vibration, acoustic emission)
+
+Three tools (c1, c4, c6) cut stainless steel (HRC52) under identical settings, with cutting
+forces, vibration and acoustic emission recorded on every cut and flank wear measured after
+every cut. Because the settings never change, cutting time alone cannot tell the tools apart:
+the sensors have to do the work. Each tool is tested as an unseen tool (train on two, test on
+the third). Wear limit: 0.15 mm on the worst flute.
+
+**Headline:** on this data the sensors clearly help, and a simple calibration step fixed most
+of the uncertainty problem from the NASA study. Choosing a safe replacement threshold for a new
+tool is still the hard part.
+
+| Result | Value |
+|---|---|
+| Wear error, quantile gradient boosting (sensors) | **0.0156 mm** |
+| Wear error, cut-number baseline (no sensors) | 0.0234 mm (sensors about 33% lower) |
+| 10–90% band coverage before / after calibration | 43% → **77%** (target 80%) |
+| Risk policy, threshold set in advance (p* = 0.2) | **0 of 3** tools failed, 34% of safe life used |
+| Risk policy, threshold chosen from the other two tools | 1 of 3 failed, 67% of safe life used |
+| Fixed rule (shortest safe life of the other tools) | 1 of 3 failed, 88% of safe life used |
+
+**Calibration.** The band is widened by a factor learned only from the training tools (an
+inner leave-one-tool-out check of how often the band missed). The factor ranged from ×2.4 to
+×5.8; tool c6 needed by far the widest band, because it behaves differently from c1 and c4.
+
+**What this means.** With honest (wide) uncertainty, the cautious policy was safe but wasted
+tool life. A threshold learned from two tools did not transfer to the third. Tool-to-tool
+variation, not the wear model itself, is the main obstacle, and it needs data from many more
+tools to solve.
+
+**Missing sensors.** Removing force (0.0229 mm) or vibration (0.0211 mm) made predictions
+clearly worse; removing acoustic emission changed almost nothing (0.0161 mm vs 0.0160 mm).
+Force alone was no better than no sensors. (This test uses a separately trained median model,
+so its all-sensor error, 0.0160 mm, differs slightly from the 0.0156 mm above.)
+
+Only three labelled tools: treat these numbers as indicative, not conclusive.
+
+![PHM wear predictions](results_phm/figures/wear_by_cutter.png)
+![PHM policy trade-off](results_phm/figures/tradeoff.png)
+![PHM missing sensors](results_phm/figures/missing_sensor.png)
+
+**Run it:** download cutters c1, c4 and c6 (for example the Kaggle copy
+`rabahba/phm-data-challenge-2010`), put them in `data/phm2010/`, then
+`python run_phm.py --data data/phm2010`.
+
+---
+
+## Data (NASA study)
 
 16 milling experiments ("cases"), each one tool run until worn, at different
 depths of cut, feeds and two materials (cast iron and steel). After each run
@@ -76,7 +123,7 @@ Flank wear (VB) was measured after some runs, not all.
 <https://data.nasa.gov/dataset/milling-wear>, unzip it, and put `mill.mat` in
 the `data/` folder.
 
-## How to run
+## How to run (NASA study)
 
 ```bash
 python -m venv .venv
@@ -113,9 +160,9 @@ Options: `--limit 0.3` (wear limit in mm), `--p-star 0.2` (replacement risk thre
 
 ## Next steps
 
-- Repeat on the PHM Society 2010 milling data (force, vibration, acoustic emission; closer to "axis forces").
+- Learn the replacement threshold in a way that transfers between tools (more tools, or tool-specific adaptation).
 - Test transfer between cutters and materials.
-- Better-calibrated uncertainty (for example conformal prediction), to raise coverage from 55% towards 80%.
+- Better-calibrated uncertainty: the simple calibration raised PHM coverage to 77%; test it on more tools and on NASA.
 - Physics-informed model: use the Taylor-style baseline as a prior and let the data-driven model learn the correction.
 
 ## Testing the code without the real data
@@ -124,7 +171,9 @@ Options: `--limit 0.3` (wear limit in mm), `--p-star 0.2` (replacement risk thre
 (`data/synthetic_mill.mat`) so you can check the code runs. Its numbers mean
 nothing; never report results from it.
 
-## Reference
+## References
 
 A. Agogino and K. Goebel (2007). BEST Lab, UC Berkeley. "Milling Data Set",
 NASA Ames Prognostics Data Repository, NASA Ames Research Center, Moffett Field, CA.
+
+PHM Society 2010 Data Challenge, high-speed CNC milling cutter data (c1, c4, c6).

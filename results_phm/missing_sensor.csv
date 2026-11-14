@@ -1,0 +1,7 @@
+features,MAE_mm,n_features
+all sensors,0.015964248721448224,84
+without force,0.022892263854557268,48
+without vibration,0.021085388101320754,48
+without acoustic emission,0.016116020156014328,72
+force only,0.022920616619118813,36
+no sensors (cut number only),0.022068827778468914,1

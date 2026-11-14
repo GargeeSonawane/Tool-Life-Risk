@@ -1,0 +1,51 @@
+{
+  "scores": [
+    {
+      "model": "gbm_q",
+      "MAE_mm": 0.015573984068069409,
+      "RMSE_mm": 0.02342781793208505
+    },
+    {
+      "model": "forest",
+      "MAE_mm": 0.016314548170113876,
+      "RMSE_mm": 0.02060335073347086
+    },
+    {
+      "model": "ridge",
+      "MAE_mm": 0.019529685507700175,
+      "RMSE_mm": 0.028115119723400247
+    },
+    {
+      "model": "cut_baseline",
+      "MAE_mm": 0.02341016191734412,
+      "RMSE_mm": 0.03097563571271748
+    }
+  ],
+  "coverage": {
+    "raw": 0.4264550264550265,
+    "calibrated": 0.7703703703703704
+  },
+  "risk_policy": {
+    "tools": 3,
+    "failures": 0,
+    "failure_rate": 0.0,
+    "mean_life_used": 0.34078838701480213,
+    "mean_life_used_no_failure": 0.34078838701480213
+  },
+  "risk_policy_nested": {
+    "tools": 3,
+    "failures": 1,
+    "failure_rate": 0.3333333333333333,
+    "mean_life_used": 0.6713720009317493,
+    "mean_life_used_no_failure": 0.507058001397624
+  },
+  "fixed_policy": {
+    "tools": 3,
+    "failures": 1,
+    "failure_rate": 0.3333333333333333,
+    "mean_life_used": 0.8816678313533659,
+    "mean_life_used_no_failure": 0.8225017470300489
+  },
+  "cost_risk": 161.33333333333334,
+  "cost_fixed": 38.333333333333336
+}

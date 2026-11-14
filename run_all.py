@@ -157,7 +157,7 @@ def main():
         "",
         "Figures are in `results/figures/`.",
     ]
-    (out / "summary.md").write_text("\n".join(lines))
+    (out / "summary.md").write_text("\n".join(lines), encoding="utf-8")
     (out / "summary.json").write_text(json.dumps({"scores": scores.to_dict("records"), "coverage_80": cover,
                                                  "risk_policy": chosen, "fixed_policy": fixed_loco,
                                                  "cost_risk": cost_model, "cost_fixed": cost_fixed}, indent=2,

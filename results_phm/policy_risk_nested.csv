@@ -1,0 +1,4 @@
+case,safe_runs,runs_done,failure,life_used,p_star_chosen
+1,270,14,False,0.05185185185185185,0.1
+4,265,255,False,0.9622641509433962,0.2
+6,220,234,True,1.0,0.4

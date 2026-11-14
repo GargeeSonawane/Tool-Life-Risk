@@ -1,0 +1,4 @@
+case,safe_runs,runs_done,failure,life_used
+1,270,15,False,0.05555555555555555
+4,265,255,False,0.9622641509433962
+6,220,1,False,0.004545454545454545
