@@ -33,11 +33,11 @@ SIGMA_FLOOR = 0.02  # mm
 KEEP_BELOW = 0.05
 
 
-def add_risk(pred: pd.DataFrame, limit: float) -> pd.DataFrame:
+def add_risk(pred: pd.DataFrame, limit: float, sigma_floor: float = SIGMA_FLOOR) -> pd.DataFrame:
     out = []
     for _, g in pred.groupby("case", sort=True):
         g = g.sort_values("run").copy()
-        sigma = np.maximum((g["q90"] - g["q10"]) / (2 * Z90), SIGMA_FLOOR)
+        sigma = np.maximum((g["q90"] - g["q10"]) / (2 * Z90), sigma_floor)
         rate = g["q50"].diff().clip(lower=0).rolling(2, min_periods=1).mean().fillna(0)
         nxt = g["q50"] + rate
         g["sigma"] = sigma

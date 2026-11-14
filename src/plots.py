@@ -98,3 +98,28 @@ def importance(names, values, path, top=15):
     fig.tight_layout()
     fig.savefig(path, dpi=150)
     plt.close(fig)
+
+
+def wear_by_cutter(risked: pd.DataFrame, limit: float, path, raw_band: bool = True):
+    """PHM 2010: one panel per held-out cutter, every cut has a measured wear value."""
+    cutters = sorted(risked["case"].unique())
+    fig, axes = plt.subplots(1, len(cutters), figsize=(5 * len(cutters), 4), sharey=True)
+    for ax, c in zip(np.ravel(axes), cutters):
+        g = risked[risked["case"] == c].sort_values("run")
+        ax.fill_between(g["run"], g["q10"], g["q90"], color=BLUE, alpha=0.18, linewidth=0,
+                        label="calibrated 10–90% band")
+        if raw_band and "q10_raw" in g:
+            ax.plot(g["run"], g["q10_raw"], color=BLUE, linewidth=0.8, linestyle=":")
+            ax.plot(g["run"], g["q90_raw"], color=BLUE, linewidth=0.8, linestyle=":",
+                    label="band before calibration")
+        ax.plot(g["run"], g["VB"], color=INK, linewidth=1.5, label="measured wear")
+        ax.plot(g["run"], g["q50"], color=BLUE, label="predicted (median)")
+        ax.axhline(limit, color=MUTED, linestyle="--", linewidth=1, label="wear limit")
+        ax.set_title(f"Cutter c{c} (trained on the other two)")
+        ax.set_xlabel("Cut number")
+    np.ravel(axes)[0].set_ylabel("Flank wear VB, worst flute (mm)")
+    np.ravel(axes)[0].legend(frameon=False, loc="upper left", fontsize=8)
+    fig.suptitle("PHM 2010: predicted wear on an unseen cutter", color=INK)
+    fig.tight_layout()
+    fig.savefig(path, dpi=150)
+    plt.close(fig)
